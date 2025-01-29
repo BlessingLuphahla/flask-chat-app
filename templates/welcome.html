@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Welcome to Chat</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='main.css') }}">
+</head>
+<body>
+    <div class="welcome-container">
+        <h2>Welcome to Flask Chat</h2>
+        <p>Enter your details to continue:</p>
+        
+        <label for="username">Username:</label>
+        <input type="text" id="username" placeholder="Enter your name">
+        
+        <label for="userID">User ID:</label>
+        <input type="text" id="userID" placeholder="Enter your ID">
+        
+        <button onclick="saveUserInfo()">Start Chat</button>
+    </div>
+
+    <script>
+        function saveUserInfo() {
+            var username = document.getElementById("username").value.trim();
+            var userID = document.getElementById("userID").value.trim();
+
+            if (username === "" || userID === "") {
+                alert("Please enter both Username and User ID.");
+                return;
+            }
+
+            // Store user data in sessionStorage
+            sessionStorage.setItem("username", username);
+            sessionStorage.setItem("userID", userID);
+
+            // Redirect to chat page
+            window.location.href = "/chat";
+        }
+    </script>
+</body>
+</html>

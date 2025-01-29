@@ -1,0 +1,94 @@
+/* General Page Styling */
+body {
+    font-family: 'Arial', sans-serif;
+    background-color: #1e1e1e;
+    color: #ffffff;
+    text-align: center;
+    margin: 0;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    height: 100vh;
+    justify-content: center;
+}
+
+/* Title */
+h2 {
+    margin-bottom: 10px;
+    color: #00d4ff;
+}
+
+/* Chat Box */
+#chat-box {
+    width: 90%;
+    max-width: 500px;
+    height: 400px;
+    border: 2px solid #00d4ff;
+    border-radius: 10px;
+    padding: 15px;
+    background: #2a2a2a;
+    overflow-y: auto;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    scroll-behavior: smooth;
+}
+
+/* Chat Messages */
+.message {
+    padding: 10px 15px;
+    border-radius: 20px;
+    max-width: 75%;
+    word-wrap: break-word;
+    font-size: 14px;
+}
+
+/* User Message */
+.user-message {
+    background-color: #00d4ff;
+    color: #000;
+    align-self: flex-end;
+}
+
+/* Other User Message */
+.sender-message {
+    background-color: #555;
+    color: #fff;
+    align-self: flex-start;
+}
+
+/* Input & Button Container */
+.input-container {
+    margin-top: 10px;
+    display: flex;
+    width: 90%;
+    max-width: 500px;
+}
+
+/* Input Field */
+input {
+    flex: 1;
+    padding: 10px;
+    border: 2px solid #00d4ff;
+    border-radius: 5px;
+    outline: none;
+    background-color: #2a2a2a;
+    color: white;
+}
+
+/* Send Button */
+button {
+    padding: 10px 15px;
+    margin-left: 10px;
+    border: none;
+    background-color: #00d4ff;
+    color: black;
+    border-radius: 5px;
+    cursor: pointer;
+    font-weight: bold;
+}
+
+/* Button Hover Effect */
+button:hover {
+    background-color: #00b3cc;
+}
