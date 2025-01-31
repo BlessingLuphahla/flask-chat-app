@@ -9,7 +9,7 @@ from werkzeug.utils import secure_filename
 
 app = Flask(__name__)
 app.secret_key = "your_secret_key"  # To secure cookies, optional but recommended
-socketio = SocketIO(app, cors_allowed_origins="*")
+socketio = SocketIO(app, cors_allowed_origins="*",async_mode="eventlet", engineio_logger=True, logger=True)
 
 app.config["UPLOAD_FOLDER"] = os.path.join(os.getcwd(), "uploads")
 
