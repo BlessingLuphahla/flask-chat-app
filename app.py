@@ -1,10 +1,11 @@
+import eventlet
+eventlet.monkey_patch()
+
 from flask import Flask, render_template, request, jsonify,send_from_directory
 from flask_socketio import SocketIO, send
 import os
 import base64
 from werkzeug.utils import secure_filename
-import eventlet
-eventlet.monkey_patch()
 
 app = Flask(__name__)
 app.secret_key = "your_secret_key"  # To secure cookies, optional but recommended
