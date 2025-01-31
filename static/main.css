@@ -92,3 +92,22 @@ button {
 button:hover {
     background-color: #00b3cc;
 }
+
+#file-input {
+    display: none;
+}
+
+#file-label::before {
+    content: 'File';
+    display: inline-block;
+    background-color: #00d4ff;
+    color: black;
+    padding: 10px 15px;
+    border-radius: 5px;
+    cursor: pointer;
+    font-weight: bold;
+    margin: 0 10px;
+}
+
+
+
