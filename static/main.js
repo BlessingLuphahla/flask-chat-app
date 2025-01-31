@@ -7,21 +7,10 @@ document.getElementById("chat-header").innerText = `Welcome, ${username}`;
 
 // Connect to the Flask server using SocketIO
 
-// <<<< ----  BELOW ARE TWO OPTIONS ----- >>>>>
-
-// LOCAL DEVELOPMENT
-
 var socket = io.connect(window.location.protocol + "//" + window.location.host, {
   transports: ["websocket"],
 });
 
-// PRODUCTION
-
-// var socket = io.connect("https://flask-chat-app-e1m6.onrender.com/", {
-//   transports: ["websocket"],
-// });
-
-// <<<<  --------------------  >>>>>
 
 // Listen for incoming messages
 socket.on("message", function (data) {
@@ -81,7 +70,6 @@ function sendFile(file) {
   var reader = new FileReader();
   reader.onload = function (event) {
     var fileData = event.target.result; // Data URL
-    console.log("Encoded file:", fileData.substring(0, 50) + "..."); // Debugging
 
     // Send base64 file to Flask server
     socket.emit("file", {
@@ -111,7 +99,6 @@ socket.on("file", function (data) {
 });
 
 function sendAFile(sender, data, senderType) {
-  console.log("File received:", data.filename); // Debugging log
 
   var chatBox = document.getElementById("chat-box");
   var messageElement = document.createElement("div");
@@ -127,3 +114,9 @@ function sendAFile(sender, data, senderType) {
   chatBox.appendChild(messageElement);
   chatBox.scrollTop = chatBox.scrollHeight; // Auto-scroll
 }
+
+socket.on('error', (errorMessage) => {
+  console.error(errorMessage);
+  // Display the error message to the user
+  alert(errorMessage);
+});

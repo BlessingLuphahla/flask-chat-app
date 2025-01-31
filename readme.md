@@ -2,8 +2,6 @@
 
 A real-time messaging app built with Flask, Socket.IO, and JavaScript.
 
-## NOTE THIS PROJECT DOESNT WORK ONLINE YET>>>ONLY WORKS LOCALLY
-
 ## Features
 
 * Real-time messaging
