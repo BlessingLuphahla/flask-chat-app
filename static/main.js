@@ -6,13 +6,30 @@ var userID = sessionStorage.getItem("userID") || "0000";
 document.getElementById("chat-header").innerText = `Welcome, ${username}`;
 
 // Connect to the Flask server using SocketIO
-var socket = io.connect(window.location.protocol + "//" + window.location.host, {
+
+// <<<< ----  BELOW ARE TWO OPTIONS ----- >>>>>
+
+// LOCAL DEVELOPMENT
+
+// var socket = io.connect(window.location.protocol + "//" + window.location.host, {
+//   transports: ["websocket"],
+// });
+
+// PRODUCTION
+
+var socket = io.connect("https://flask-chat-app-e1m6.onrender.com/", {
   transports: ["websocket"],
 });
 
+// <<<<  --------------------  >>>>>
+
 // Listen for incoming messages
 socket.on("message", function (data) {
-  addMessage(data.username, data.message, data.username === username ? "user" : "other");
+  addMessage(
+    data.username,
+    data.message,
+    data.username === username ? "user" : "other"
+  );
 });
 
 // Add messages to chat box with different classes for user and other participants
@@ -21,8 +38,11 @@ function addMessage(sender, msg, senderType) {
   var messageElement = document.createElement("div");
 
   // Assign class based on senderType
-  
-  messageElement.classList.add("message", senderType === "user" ? "user-message" : "sender-message");
+
+  messageElement.classList.add(
+    "message",
+    senderType === "user" ? "user-message" : "sender-message"
+  );
   // Format message with the sender's name
   var messageContent = `<strong>${sender}</strong>: ${msg}`;
   messageElement.innerHTML = messageContent;
@@ -59,45 +79,46 @@ function handleKeyPress(event) {
 
 function sendFile(file) {
   var reader = new FileReader();
-  reader.onload = function(event) {
-      var fileData = event.target.result;  // Data URL
-      console.log("Encoded file:", fileData.substring(0, 50) + "..."); // Debugging
+  reader.onload = function (event) {
+    var fileData = event.target.result; // Data URL
+    console.log("Encoded file:", fileData.substring(0, 50) + "..."); // Debugging
 
-      // Send base64 file to Flask server
-      socket.emit("file", {
-          username: username,
-          file: fileData,
-          filename: file.name,
-          filetype: file.type
-      });
+    // Send base64 file to Flask server
+    socket.emit("file", {
+      username: username,
+      file: fileData,
+      filename: file.name,
+      filetype: file.type,
+    });
   };
   reader.readAsDataURL(file);
 }
 
-
 function handleFileSelection(event) {
   var file = event.target.files[0];
   if (file) {
-      sendFile(file);
+    sendFile(file);
   }
 }
 
-document.getElementById("file-input").addEventListener("change", handleFileSelection);
-
+document
+  .getElementById("file-input")
+  .addEventListener("change", handleFileSelection);
 
 // Listen for file events from the server
-socket.on("file", function(data) {
+socket.on("file", function (data) {
   sendAFile(data.username, data, data.username === username ? "user" : "other");
 });
 
-
-function sendAFile(sender,data,senderType) {
+function sendAFile(sender, data, senderType) {
   console.log("File received:", data.filename); // Debugging log
 
   var chatBox = document.getElementById("chat-box");
   var messageElement = document.createElement("div");
-  messageElement.classList.add("message", senderType === "user" ? "user-message" : "sender-message");
-
+  messageElement.classList.add(
+    "message",
+    senderType === "user" ? "user-message" : "sender-message"
+  );
 
   // Display file with a download link
   var messageContent = `<strong>${data.username}</strong>: <a href="/uploads/${data.filename}" target="_blank">${data.filename}</a>`;
