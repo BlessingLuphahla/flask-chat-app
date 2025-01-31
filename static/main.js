@@ -11,15 +11,15 @@ document.getElementById("chat-header").innerText = `Welcome, ${username}`;
 
 // LOCAL DEVELOPMENT
 
-// var socket = io.connect(window.location.protocol + "//" + window.location.host, {
-//   transports: ["websocket"],
-// });
+var socket = io.connect(window.location.protocol + "//" + window.location.host, {
+  transports: ["websocket"],
+});
 
 // PRODUCTION
 
-var socket = io.connect("https://flask-chat-app-e1m6.onrender.com/", {
-  transports: ["websocket"],
-});
+// var socket = io.connect("https://flask-chat-app-e1m6.onrender.com/", {
+//   transports: ["websocket"],
+// });
 
 // <<<<  --------------------  >>>>>
 
