@@ -86,7 +86,12 @@ document.getElementById("file-input").addEventListener("change", handleFileSelec
 
 
 // Listen for file events from the server
-socket.on("file", function (data) {
+socket.on("file", function(data) {
+  sendAFile(data.username, data, data.username === username ? "user" : "other");
+});
+
+
+function sendAFile(sender,data,senderType) {
   console.log("File received:", data.filename); // Debugging log
 
   var chatBox = document.getElementById("chat-box");
@@ -100,4 +105,4 @@ socket.on("file", function (data) {
 
   chatBox.appendChild(messageElement);
   chatBox.scrollTop = chatBox.scrollHeight; // Auto-scroll
-});
+}

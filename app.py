@@ -1,4 +1,4 @@
-from flask import Flask, render_template, request, jsonify
+from flask import Flask, render_template, request, jsonify,send_from_directory
 from flask_socketio import SocketIO, send
 import os
 import base64
@@ -22,6 +22,12 @@ def index():
 @app.route("/chat")
 def chat():
     return render_template("index.html")
+
+# Serve uploaded files
+@app.route("/uploads/<filename>")
+def uploaded_file(filename):
+    return send_from_directory(app.config["UPLOAD_FOLDER"], filename)
+
 
 @socketio.on("message")
 def handle_message(msg):
