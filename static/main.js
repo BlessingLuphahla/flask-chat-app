@@ -30,6 +30,14 @@ socket.on("message", function (data) {
 function addMessage(sender, msg, senderType) {
   var messageElement = document.createElement("div");
 
+  // function showCopiedSuccess
+
+  messageElement.addEventListener("click", function () {
+    navigator.clipboard
+      .writeText(msg)
+      .then(() => console.log("done"))
+      .catch((err) => console.log(err));
+  });
   // Assign class based on senderType
 
   messageElement.classList.add(
@@ -38,7 +46,7 @@ function addMessage(sender, msg, senderType) {
   );
 
   // Format message with the sender's name
-  var messageContent = `<strong>${sender}</strong>: ${msg}`;
+  var messageContent = `<strong>${sender}</strong>: <br/> ${msg}`;
   messageElement.innerHTML = messageContent;
 
   chatBox.appendChild(messageElement);
@@ -116,7 +124,7 @@ function sendAFile(sender, data, senderType) {
   );
 
   // Display file with a download link
-  var messageContent = `<strong>${data.username}</strong>: <a class="uploadLink" href="/uploads/${data.filename}" target="_blank">${data.filename}</a>`;
+  var messageContent = `<strong>${data.username}</strong>: <br/> <a class="uploadLink" href="/uploads/${data.filename}" target="_blank">${data.filename}</a>`;
   messageElement.innerHTML = messageContent;
 
   chatBox.appendChild(messageElement);
