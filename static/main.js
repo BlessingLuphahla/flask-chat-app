@@ -1,16 +1,21 @@
 // Retrieve user info from sessionStorage
 var username = sessionStorage.getItem("username") || "Guest";
 var userID = sessionStorage.getItem("userID") || "0000";
+const chatBox = document.getElementById("chat-box");
 
 // Display username in chat header
 document.getElementById("chat-header").innerText = `Welcome, ${username}`;
 
+// event listeners
+
 // Connect to the Flask server using SocketIO
 
-var socket = io.connect(window.location.protocol + "//" + window.location.host, {
-  transports: ["websocket"],
-});
-
+var socket = io.connect(
+  window.location.protocol + "//" + window.location.host,
+  {
+    transports: ["websocket"],
+  }
+);
 
 // Listen for incoming messages
 socket.on("message", function (data) {
@@ -23,7 +28,6 @@ socket.on("message", function (data) {
 
 // Add messages to chat box with different classes for user and other participants
 function addMessage(sender, msg, senderType) {
-  var chatBox = document.getElementById("chat-box");
   var messageElement = document.createElement("div");
 
   // Assign class based on senderType
@@ -32,6 +36,7 @@ function addMessage(sender, msg, senderType) {
     "message",
     senderType === "user" ? "user-message" : "sender-message"
   );
+
   // Format message with the sender's name
   var messageContent = `<strong>${sender}</strong>: ${msg}`;
   messageElement.innerHTML = messageContent;
@@ -43,7 +48,10 @@ function addMessage(sender, msg, senderType) {
 // Send message to Flask server
 function sendMessage() {
   var inputField = document.getElementById("message");
+
   var message = inputField.value.trim();
+
+  message = message.replace("/\n/g", "<br>");
 
   if (message !== "") {
     // Emit message with user info
@@ -59,11 +67,13 @@ function sendMessage() {
   }
 }
 
-// Allow sending message by pressing "Enter"
+// Allow sending message by pressing "Space"
 function handleKeyPress(event) {
-  if (event.key === "Enter" && !event.shiftKey) {
-    sendMessage();
-  }
+  // var inputField = document.getElementById("message");
+  // if (event.key === "Enter" && !event.shiftKey) {
+  //   inputField.value = inputField.value + "<br/>";
+  //   console.log(inputField.value);
+  // }
 }
 
 function sendFile(file) {
@@ -99,8 +109,6 @@ socket.on("file", function (data) {
 });
 
 function sendAFile(sender, data, senderType) {
-
-  var chatBox = document.getElementById("chat-box");
   var messageElement = document.createElement("div");
   messageElement.classList.add(
     "message",
@@ -108,14 +116,14 @@ function sendAFile(sender, data, senderType) {
   );
 
   // Display file with a download link
-  var messageContent = `<strong>${data.username}</strong>: <a href="/uploads/${data.filename}" target="_blank">${data.filename}</a>`;
+  var messageContent = `<strong>${data.username}</strong>: <a class="uploadLink" href="/uploads/${data.filename}" target="_blank">${data.filename}</a>`;
   messageElement.innerHTML = messageContent;
 
   chatBox.appendChild(messageElement);
   chatBox.scrollTop = chatBox.scrollHeight; // Auto-scroll
 }
 
-socket.on('error', (errorMessage) => {
+socket.on("error", (errorMessage) => {
   console.error(errorMessage);
   // Display the error message to the user
   alert(errorMessage);
