@@ -1,3 +1,6 @@
+import eventlet
+eventlet.monkey_patch()
+
 from flask import Flask, render_template, request, jsonify,send_from_directory
 from flask_socketio import SocketIO, send
 import os
@@ -6,7 +9,8 @@ from werkzeug.utils import secure_filename
 
 app = Flask(__name__)
 app.secret_key = "your_secret_key"  # To secure cookies, optional but recommended
-socketio = SocketIO(app, cors_allowed_origins="*", engineio_logger=True, logger=True)
+socketio = SocketIO(app, cors_allowed_origins="*",async_mode="eventlet", engineio_logger=True, logger=True)
+# socketio = SocketIO(app, cors_allowed_origins="*")
 
 app.config["UPLOAD_FOLDER"] = os.path.join(os.getcwd(), "uploads")
 
@@ -19,7 +23,6 @@ def index():
 
 @app.route("/chat")
 def chat():
-    
     return render_template("index.html")
 
 # Serve uploaded files
@@ -33,8 +36,6 @@ def handle_message(msg):
     # Assuming user data is passed with the message
     username = msg.get("username", "Guest")
     message = msg.get("message", "")
-    
-    print(message)
     
     # Send the message back to all clients
     socketio.emit("message", {"username": username, "message": message},include_self=False
@@ -71,4 +72,4 @@ def handle_file(file_data):
 
 
 if __name__ == "__main__":
-    socketio.run(app,host="0.0.0.0")
+    socketio.run(app,host='0.0.0.0')
